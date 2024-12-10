@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1046481105000",
+    "project_id": "jobmoim-ec789",
+    "storage_bucket": "jobmoim-ec789.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046481105000:android:3f77fbf9c8b9180cf90bdd",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI6XVJw_cIc1zhHrMGqPtXUf97i-t-IiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046481105000:android:3036062cf45c8222f90bdd",
+        "android_client_info": {
+          "package_name": "com.jobmoim.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI6XVJw_cIc1zhHrMGqPtXUf97i-t-IiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
