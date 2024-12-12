@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:jobmoim/assets/style/fonts.dart';
 import 'package:jobmoim/providers/main_provider.dart';
 import 'package:jobmoim/widget/common/jm_button.dart';
 
@@ -9,20 +11,35 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Provider 예시
-    final value = ref.watch(mainProviderProvider);
+    final value = ref.watch(currentTitleProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('행복한저금통 만들기'),
-        centerTitle: true,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                'lib/assets/images/pig.svg',
+                width: 24,
+                height: 24,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                value,
+                style: TextStyles.titleStyle,
+              ),
+            ],
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               '닉네임',
-              style: TextStyle(fontSize: 18),
+              style: TextStyles.baseStyle,
             ),
             const SizedBox(height: 20),
             TextField(

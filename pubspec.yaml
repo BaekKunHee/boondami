@@ -39,6 +39,7 @@ dependencies:
   hooks_riverpod: ^2.6.1
   flutter_hooks:
   riverpod_annotation: ^2.6.1
+  firebase_core: ^2.24.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -75,6 +76,15 @@ flutter:
   assets:
     - lib/assets/images/
   #   - images/a_dot_ham.jpeg
+
+  fonts:
+    - family: JGaegujaengyi
+      fonts:
+        - asset: lib/assets/fonts/JGaegujaengyi-Medium.otf
+        - asset: lib/assets/fonts/JGaegujaengyi-Light.otf
+          weight: 300
+        - asset: lib/assets/fonts/JGaegujaengyi-Bold.otf
+          weight: 700
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

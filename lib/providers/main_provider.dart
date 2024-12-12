@@ -5,6 +5,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'main_provider.g.dart';
 
 @riverpod
-String mainProvider(Ref ref) {
-  return 'Hello, World!';
+String currentTitle(Ref ref) {
+  return '내가 너를 어떻게 부르면 될까?';
 }
+
+

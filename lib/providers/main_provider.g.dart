@@ -6,21 +6,21 @@ part of 'main_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mainProviderHash() => r'73eefdacb1af1cd187b99dd9e3b95380e17ac548';
+String _$currentTitleHash() => r'5d7feec2ff7753e876ece45112d242eda8d16fe5';
 
-/// See also [mainProvider].
-@ProviderFor(mainProvider)
-final mainProviderProvider = AutoDisposeProvider<String>.internal(
-  mainProvider,
-  name: r'mainProviderProvider',
+/// See also [currentTitle].
+@ProviderFor(currentTitle)
+final currentTitleProvider = AutoDisposeProvider<String>.internal(
+  currentTitle,
+  name: r'currentTitleProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$mainProviderHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$currentTitleHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef MainProviderRef = AutoDisposeProviderRef<String>;
+typedef CurrentTitleRef = AutoDisposeProviderRef<String>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -72,4 +72,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'jobmoim-ec789.firebasestorage.app',
     iosBundleId: 'com.example.jobmoim',
   );
+
 }
