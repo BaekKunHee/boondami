@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:jobmoim/assets/style/colors.dart';
 import 'package:jobmoim/assets/style/fonts.dart';
 import 'package:jobmoim/widget/common/jm_button.dart';
 
-class LoginInput extends StatelessWidget {
-  const LoginInput({super.key});
+class SignupInput extends StatelessWidget {
+  const SignupInput({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class LoginInput extends StatelessWidget {
           ),
           const Spacer(), // Add Spacer to push button to bottom
           JmButton(
+            color: CustomColors.primary80,
             onPressed: () {
               Navigator.pushNamed(context, '/main');
             },

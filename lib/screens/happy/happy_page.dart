@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jobmoim/assets/style/colors.dart';
 import 'package:jobmoim/widget/common/jm_button.dart';
 
 class HappyPage extends StatelessWidget {
@@ -12,7 +13,11 @@ class HappyPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
         child: Column(
           children: [
-            JmButton(onPressed: () {}, text: '행복장 가기'),
+            JmButton(
+              onPressed: () {},
+              text: '행복장 가기',
+              color: CustomColors.primary80,
+            ),
             const SizedBox(
               height: 16,
             ),

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jobmoim/assets/style/colors.dart';
 import 'package:jobmoim/screens/happy/happy_page.dart';
-import 'package:jobmoim/screens/login/login_page.dart';
 import 'package:jobmoim/screens/main/main_page.dart';
+import 'package:jobmoim/screens/signup/signup_page.dart';
+import 'package:jobmoim/screens/splash/splash_page.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Jobmoim',
       theme: ThemeData(
         fontFamily: 'JGaegujaengyi',
         useMaterial3: true,
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
           seedColor: CustomColors.background,
         ),
       ),
-      home: const LoginPage(),
+      home: const SplashPage(nextPage: SignupPage()),
       routes: {
         '/main': (context) => const MainPage(),
         '/happy': (context) => const HappyPage(),

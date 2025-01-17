@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class TextStyles {
   static TextStyle baseStyle = const TextStyle(
     fontFamily: 'JGaegujaengyi',
+    fontSize: 16,
     height: 1,
   );
 
