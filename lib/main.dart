@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jobmoim/assets/style/colors.dart';
-import 'package:jobmoim/screens/happy/happy_page.dart';
+import 'package:jobmoim/providers/main_provider.dart';
 import 'package:jobmoim/screens/main/main_page.dart';
-import 'package:jobmoim/screens/signup/signup_page.dart';
-import 'package:jobmoim/screens/splash/splash_page.dart';
+import 'package:jobmoim/screens/task/task_page.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -18,15 +17,16 @@ void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mainController = ref.watch(mainProviderProvider.notifier);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Jobmoim',
+      title: 'Boondami',
       theme: ThemeData(
         fontFamily: 'JGaegujaengyi',
         useMaterial3: true,
@@ -34,10 +34,36 @@ class MyApp extends StatelessWidget {
           seedColor: CustomColors.background,
         ),
       ),
-      home: const SplashPage(nextPage: SignupPage()),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('분다미'),
+          centerTitle: true,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: '홈',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: '검색',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.task),
+              label: '나의 할일',
+            ),
+          ],
+          currentIndex: mainController.currentIndex,
+          onTap: (index) {
+            mainController.onItemTapped(index);
+          },
+        ),
+        body: const SafeArea(child: MainPage()),
+      ),
       routes: {
         '/main': (context) => const MainPage(),
-        '/happy': (context) => const HappyPage(),
+        '/task': (context) => const TaskPage(),
       },
     );
   }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jobmoim/assets/style/colors.dart';
 import 'package:jobmoim/assets/style/fonts.dart';
 
-class JMInput extends StatelessWidget {
-  const JMInput({
+class BMInput extends StatelessWidget {
+  const BMInput({
     super.key,
     this.label = '',
     this.hintText = '',

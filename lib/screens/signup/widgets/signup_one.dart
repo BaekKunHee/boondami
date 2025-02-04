@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:jobmoim/assets/style/colors.dart';
 import 'package:jobmoim/assets/style/fonts.dart';
-import 'package:jobmoim/providers/signup_provider.dart';
-import 'package:jobmoim/widget/common/jm_button.dart';
-import 'package:jobmoim/widget/common/jm_input.dart';
+import 'package:jobmoim/widget/common/bm_button.dart';
+import 'package:jobmoim/widget/common/bm_image.dart';
+import 'package:jobmoim/widget/common/bm_input.dart';
 
 class SignupOne extends ConsumerWidget {
   const SignupOne({super.key});
@@ -19,10 +18,11 @@ class SignupOne extends ConsumerWidget {
         children: [
           Row(
             children: [
-              SvgPicture.asset(
-                'lib/assets/images/pig.svg',
+              const BMImage(
+                imageUrl: 'lib/assets/images/pig.svg',
                 width: 24,
                 height: 24,
+                imageType: ImageType.svg,
               ),
               const SizedBox(width: 8),
               Text(
@@ -36,14 +36,15 @@ class SignupOne extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const JMInput(
+                const BMInput(
                   label: '닉네임',
                   hintText: '최대 6글자',
                 ),
-                JmButton(
+                BMButton(
                   color: CustomColors.primary80,
-                  onPressed: () => 
-                      ref.read(stepperNotifierProvider.notifier).nextStep(),
+                  onPressed: () =>
+                      // ref.read(stepperNotifierProvider.notifier).nextStep(),
+                      Navigator.pushNamed(context, '/shelf'),
                   text: '다음',
                 )
               ],

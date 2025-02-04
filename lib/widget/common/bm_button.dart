@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:jobmoim/assets/style/colors.dart';
 
-class JmButton extends StatelessWidget {
-  const JmButton({
+class BMButton extends StatelessWidget {
+  const BMButton({
     super.key,
     required this.onPressed,
     required this.text,

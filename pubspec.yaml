@@ -21,6 +21,7 @@ version: 1.0.0+1
 scripts:
   dev: flutter run -d chrome --web-renderer html
   build: dart pub run build_runner build
+  generate : flutter pub run build_runner watch --delete-conflicting-outputs 
 
 environment:
   sdk: ^3.5.3
