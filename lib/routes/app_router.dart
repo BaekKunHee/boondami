@@ -1,7 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:jobmoim/screens/my/my_page.dart';
 
 import '../screens/login/login_page.dart';
 import '../screens/main/main_page.dart';
@@ -48,10 +47,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/main',
         builder: (context, state) => const MainPage(),
       ),
-      GoRoute(
-        path: '/my',
-        builder: (context, state) => const MyPage(),
-      ),
+      // GoRoute(
+      //   path: '/my',
+      //   builder: (context, state) => const MyPage(),
+      // ),
     ],
   );
 });

@@ -1,1 +1,39 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"jobmoim-ec789","appId":"1:1046481105000:android:3036062cf45c8222f90bdd","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"jobmoim-ec789","appId":"1:1046481105000:ios:03c222d0e3368a06f90bdd","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"jobmoim-ec789","configurations":{"android":"1:1046481105000:android:3036062cf45c8222f90bdd","ios":"1:1046481105000:ios:03c222d0e3368a06f90bdd","web":"1:1046481105000:web:f0fbfb65493d8117f90bdd"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "jobmoim-ec789",
+          "appId": "1:1046481105000:android:3036062cf45c8222f90bdd",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "jobmoim-ec789",
+          "appId": "1:1046481105000:ios:03c222d0e3368a06f90bdd",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "jobmoim-ec789",
+          "configurations": {
+            "android": "1:1046481105000:android:3036062cf45c8222f90bdd",
+            "ios": "1:1046481105000:ios:03c222d0e3368a06f90bdd",
+            "web": "1:1046481105000:web:f0fbfb65493d8117f90bdd"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

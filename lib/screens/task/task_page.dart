@@ -16,7 +16,7 @@ class TaskPage extends ConsumerWidget {
           itemBuilder: (context, index) {
             final task = tasks[index];
             return ListTile(
-              title: Text(task.taskType),
+              title: Text(task.taskType.label),
               subtitle: Text('Status: ${task.status}'),
               trailing: Text('Duration: ${task.duration}'),
             );

@@ -9,7 +9,7 @@ part of 'task.dart';
 _$TaskImpl _$$TaskImplFromJson(Map<String, dynamic> json) => _$TaskImpl(
       id: json['id'] as String,
       userId: json['user_id'] as String?,
-      taskType: json['task_type'] as String,
+      taskType: $enumDecode(_$TaskTypeEnumMap, json['task_type']),
       duration: (json['duration'] as num).toInt(),
       status: json['status'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
@@ -19,10 +19,15 @@ _$TaskImpl _$$TaskImplFromJson(Map<String, dynamic> json) => _$TaskImpl(
 Map<String, dynamic> _$$TaskImplToJson(_$TaskImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'user_id': instance.userId,
-      'task_type': instance.taskType,
+      if (instance.userId case final value?) 'user_id': value,
+      'task_type': _$TaskTypeEnumMap[instance.taskType]!,
       'duration': instance.duration,
       'status': instance.status,
       'created_at': instance.createdAt.toIso8601String(),
-      'match_id': instance.matchId,
+      if (instance.matchId case final value?) 'match_id': value,
     };
+
+const _$TaskTypeEnumMap = {
+  TaskType.cleaning: 'cleaning',
+  TaskType.laundry: 'laundry',
+};

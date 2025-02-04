@@ -20,14 +20,25 @@ class TaskProvider extends _$TaskProvider {
       throw Exception('User not logged in');
     }
 
-    final response = await supabase
-        .from('tasks')
-        .select()
-        .eq('user_id', user.id)
-        .order('created_at', ascending: false);
-    print(response);
+    try {
+      final response = await supabase
+          .from('tasks')
+          .select()
+          .eq('user_id', user.id)
+          .order('created_at', ascending: false);
 
-    return response.map((json) => Task.fromJson(json)).toList();
+      print('Response: $response'); // 디버깅용
+
+      return response.map((json) {
+        // DateTime 형식 변환을 명시적으로 처리
+        json['created_at'] =
+            DateTime.parse(json['created_at']).toIso8601String();
+        return Task.fromJson(json);
+      }).toList();
+    } catch (e) {
+      print('Error fetching tasks: $e'); // 디버깅용
+      rethrow;
+    }
   }
 
   Future<void> refreshTasks() async {
@@ -61,10 +72,16 @@ class TaskProvider extends _$TaskProvider {
   Future<void> updateTaskStatus({
     required String taskId,
     required String status,
+    required String taskType,
+    required int duration,
   }) async {
     final supabase = Supabase.instance.client;
 
-    await supabase.from('tasks').update({'status': status}).eq('id', taskId);
+    await supabase.from('tasks').update({
+      'status': status,
+      'task_type': taskType,
+      'duration': duration,
+    }).eq('id', taskId);
 
     refreshTasks();
   }

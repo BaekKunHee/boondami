@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class BMSwitch extends StatefulWidget {
-  const BMSwitch({super.key});
+  final bool disabled;
+  const BMSwitch({super.key, required this.disabled});
 
   @override
   BMSwitchState createState() => BMSwitchState();
@@ -15,9 +16,11 @@ class BMSwitchState extends State<BMSwitch>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isMale = !isMale;
-        });
+        if (!widget.disabled) {
+          setState(() {
+            isMale = !isMale;
+          });
+        }
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),

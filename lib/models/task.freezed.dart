@@ -24,7 +24,7 @@ mixin _$Task {
   @JsonKey(name: 'user_id')
   String? get userId => throw _privateConstructorUsedError;
   @JsonKey(name: 'task_type')
-  String get taskType => throw _privateConstructorUsedError;
+  TaskType get taskType => throw _privateConstructorUsedError;
   int get duration => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
@@ -49,7 +49,7 @@ abstract class $TaskCopyWith<$Res> {
   $Res call(
       {String id,
       @JsonKey(name: 'user_id') String? userId,
-      @JsonKey(name: 'task_type') String taskType,
+      @JsonKey(name: 'task_type') TaskType taskType,
       int duration,
       String status,
       @JsonKey(name: 'created_at') DateTime createdAt,
@@ -91,7 +91,7 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
       taskType: null == taskType
           ? _value.taskType
           : taskType // ignore: cast_nullable_to_non_nullable
-              as String,
+              as TaskType,
       duration: null == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
@@ -122,7 +122,7 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
   $Res call(
       {String id,
       @JsonKey(name: 'user_id') String? userId,
-      @JsonKey(name: 'task_type') String taskType,
+      @JsonKey(name: 'task_type') TaskType taskType,
       int duration,
       String status,
       @JsonKey(name: 'created_at') DateTime createdAt,
@@ -161,7 +161,7 @@ class __$$TaskImplCopyWithImpl<$Res>
       taskType: null == taskType
           ? _value.taskType
           : taskType // ignore: cast_nullable_to_non_nullable
-              as String,
+              as TaskType,
       duration: null == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
@@ -183,11 +183,13 @@ class __$$TaskImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(
+    fieldRename: FieldRename.snake, includeIfNull: false, explicitToJson: true)
 class _$TaskImpl implements _Task {
-  const _$TaskImpl(
+  _$TaskImpl(
       {required this.id,
-      @JsonKey(name: 'user_id') required this.userId,
+      @JsonKey(name: 'user_id') this.userId,
       @JsonKey(name: 'task_type') required this.taskType,
       required this.duration,
       required this.status,
@@ -204,7 +206,7 @@ class _$TaskImpl implements _Task {
   final String? userId;
   @override
   @JsonKey(name: 'task_type')
-  final String taskType;
+  final TaskType taskType;
   @override
   final int duration;
   @override
@@ -260,10 +262,10 @@ class _$TaskImpl implements _Task {
 }
 
 abstract class _Task implements Task {
-  const factory _Task(
+  factory _Task(
       {required final String id,
-      @JsonKey(name: 'user_id') required final String? userId,
-      @JsonKey(name: 'task_type') required final String taskType,
+      @JsonKey(name: 'user_id') final String? userId,
+      @JsonKey(name: 'task_type') required final TaskType taskType,
       required final int duration,
       required final String status,
       @JsonKey(name: 'created_at') required final DateTime createdAt,
@@ -278,7 +280,7 @@ abstract class _Task implements Task {
   String? get userId;
   @override
   @JsonKey(name: 'task_type')
-  String get taskType;
+  TaskType get taskType;
   @override
   int get duration;
   @override
