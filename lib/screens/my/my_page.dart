@@ -4,8 +4,8 @@ import 'package:jobmoim/providers/task_provider.dart';
 import 'package:jobmoim/widget/common/bm_switch.dart';
 import 'package:jobmoim/widget/common/bottom_nav_bar.dart';
 
-class MainPage extends ConsumerWidget {
-  const MainPage({super.key});
+class MyPage extends ConsumerWidget {
+  const MyPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

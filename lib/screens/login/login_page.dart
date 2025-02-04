@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jobmoim/providers/signup_provider.dart';
+import 'package:jobmoim/providers/login_provider.dart';
 
-class SignupPage extends ConsumerWidget {
-  SignupPage({super.key});
+class LoginPage extends ConsumerWidget {
+  LoginPage({super.key});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -12,18 +12,11 @@ class SignupPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final emailController = ref.watch(emailControllerProvider);
     final passwordController = ref.watch(passwordControllerProvider);
-    final nicknameController = ref.watch(nicknameControllerProvider);
-    final signupController = ref.watch(signupControllerProvider);
-    final isLoading = ref.watch(isLoadingProvider);
+    final loginController = ref.watch(loginControllerProvider);
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: const Text('회원가입'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/login'),
-        ),
+        title: const Text('로그인'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -65,46 +58,29 @@ class SignupPage extends ConsumerWidget {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: nicknameController,
-                decoration: const InputDecoration(
-                  labelText: '닉네임',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '닉네임을 입력해주세요';
-                  }
-                  return null;
-                },
-              ),
               const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: isLoading
-                      ? null
-                      : () async {
-                          if (_formKey.currentState!.validate()) {
-                            ref.read(isLoadingProvider.notifier).state = true;
-
-                            await signupController.createUser(
-                              email: emailController.text.trim(),
-                              password: passwordController.text.trim(),
-                              nickname: nicknameController.text.trim(),
-                              context: context,
-                              ref: ref,
-                            );
-
-                            ref.read(isLoadingProvider.notifier).state = false;
-                          }
-                        },
-                  child: isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text('회원가입'),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      loginController.signIn(
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                        context: context,
+                      );
+                    }
+                  },
+                  child: const Text('로그인'),
                 ),
+              ),
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: () {
+                  context.go('/signup');
+                },
+                child: const Text('회원가입하기'),
               ),
             ],
           ),

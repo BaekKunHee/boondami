@@ -1,41 +1,86 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-part 'signup_provider.g.dart';
+final signupControllerProvider = Provider((ref) => SignupController());
 
-@riverpod
-String currentTitle(Ref ref) {
-  return '내가 너를 어떻게 부르면 될까?';
-}
+final emailControllerProvider = StateProvider.autoDispose((ref) {
+  final controller = TextEditingController();
+  ref.onDispose(() => controller.dispose());
+  return controller;
+});
 
-@riverpod
-class StepperNotifier extends AutoDisposeNotifier<int> {
-  @override
-  int build() {
-    // 초기 단계 설정 (0단계부터 시작)
-    return 0;
-  }
+final passwordControllerProvider = StateProvider.autoDispose((ref) {
+  final controller = TextEditingController();
+  ref.onDispose(() => controller.dispose());
+  return controller;
+});
 
-  // 다음 단계로 이동
-  void nextStep() {
-    if (state < 3) {
-      // 총 4단계일 경우
-      state = state + 1;
-    }
-  }
+final nicknameControllerProvider = StateProvider.autoDispose((ref) {
+  final controller = TextEditingController();
+  ref.onDispose(() => controller.dispose());
+  return controller;
+});
 
-  // 이전 단계로 이동
-  void previousStep() {
-    if (state > 0) {
-      state = state - 1;
-    }
-  }
+final isLoadingProvider = StateProvider.autoDispose((ref) => false);
 
-  // 특정 단계로 이동
-  void goToStep(int step) {
-    if (step >= 0 && step <= 3) {
-      // 총 4단계일 경우
-      state = step;
+class SignupController {
+  Future<void> createUser({
+    required String email,
+    required String password,
+    required String nickname,
+    required BuildContext context,
+    required WidgetRef ref,
+  }) async {
+    try {
+      // 1. 회원가입
+      final authResponse = await Supabase.instance.client.auth.signUp(
+        email: email,
+        password: password,
+      );
+
+      if (authResponse.user != null) {
+        // 2. profiles 테이블에 사용자 정보 저장
+        await Supabase.instance.client.from('profiles').insert({
+          'id': authResponse.user!.id,
+          'nickname': nickname,
+          'created_at': DateTime.now().toIso8601String(),
+        });
+
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('회원가입이 완료되었습니다. 이메일 인증을 진행해주세요.'),
+            ),
+          );
+          context.go('/login');
+        }
+      }
+    } on PostgrestException catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('프로필 생성 실패: ${e.message}')),
+        );
+      }
+    } on AuthException catch (e) {
+      if (context.mounted) {
+        String errorMessage = '회원가입 실패';
+
+        if (e.message.contains('already registered')) {
+          errorMessage = '이미 등록된 이메일입니다';
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage)),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('알 수 없는 오류가 발생했습니다: ${e.toString()}')),
+        );
+      }
     }
   }
 }
