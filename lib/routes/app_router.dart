@@ -1,10 +1,13 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:jobmoim/screens/calendar/calendar_page.dart';
+import 'package:jobmoim/screens/invite/invite_accept_page.dart';
 
+import '../screens/create_group/create_group_page.dart';
+import '../screens/group_detail/group_detail_page.dart';
 import '../screens/login/login_page.dart';
 import '../screens/main/main_page.dart';
-import '../screens/signup/signup_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   const storage = FlutterSecureStorage();
@@ -40,12 +43,28 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => LoginPage(),
       ),
       GoRoute(
-        path: '/signup',
-        builder: (context, state) => SignupPage(),
+        path: '/calendar',
+        builder: (context, state) => const CalendarPage(),
       ),
       GoRoute(
         path: '/main',
         builder: (context, state) => const MainPage(),
+      ),
+      GoRoute(
+        path: '/create-group',
+        builder: (context, state) => const CreateGroupPage(),
+      ),
+      GoRoute(
+        path: '/group/:id',
+        builder: (context, state) => GroupDetailPage(
+          groupId: state.pathParameters['id']!,
+        ),
+      ),
+      GoRoute(
+        path: '/invite/:id',
+        builder: (context, state) => InviteAcceptPage(
+          inviteId: state.pathParameters['id']!,
+        ),
       ),
       // GoRoute(
       //   path: '/my',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jobmoim/providers/group_provider.dart';
 import 'package:jobmoim/providers/login_provider.dart';
 
 class LoginPage extends ConsumerWidget {
@@ -13,6 +14,8 @@ class LoginPage extends ConsumerWidget {
     final emailController = ref.watch(emailControllerProvider);
     final passwordController = ref.watch(passwordControllerProvider);
     final loginController = ref.watch(loginControllerProvider);
+    final inviteId = (GoRouterState.of(context).extra
+        as Map<String, dynamic>?)?['inviteId'] as String?;
 
     return Scaffold(
       appBar: AppBar(
@@ -69,6 +72,14 @@ class LoginPage extends ConsumerWidget {
                         email: emailController.text.trim(),
                         password: passwordController.text.trim(),
                         context: context,
+                        onSuccess: () {
+                          if (inviteId != null) {
+                            ref
+                                .read(groupProviderProvider.notifier)
+                                .acceptInvite(inviteId);
+                          }
+                          context.go('/main');
+                        },
                       );
                     }
                   },

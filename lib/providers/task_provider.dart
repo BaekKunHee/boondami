@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -27,17 +28,39 @@ class TaskProvider extends _$TaskProvider {
           .eq('user_id', user.id)
           .order('created_at', ascending: false);
 
-      print('Response: $response'); // 디버깅용
+      if (response.isEmpty) {
+        debugPrint('No tasks found for user: ${user.id}');
+        return [];
+      }
 
-      return response.map((json) {
-        // DateTime 형식 변환을 명시적으로 처리
-        json['created_at'] =
-            DateTime.parse(json['created_at']).toIso8601String();
-        return Task.fromJson(json);
-      }).toList();
-    } catch (e) {
-      print('Error fetching tasks: $e'); // 디버깅용
-      rethrow;
+      debugPrint('Response: $response'); // 디버깅용
+
+      List<Task> taskList = [];
+
+      for (var json in response) {
+        try {
+          // 🔹 created_at이 올바른 형식인지 체크 후 변환
+          if (json['created_at'] != null && json['created_at'] is String) {
+            try {
+              json['created_at'] =
+                  DateTime.parse(json['created_at']).toIso8601String();
+            } catch (e) {
+              debugPrint('Invalid date format: ${json['created_at']}');
+              json['created_at'] = null; // 기본값 설정
+            }
+          }
+
+          // 🔹 JSON 변환 성공한 데이터만 리스트에 추가
+          taskList.add(Task.fromJson(json));
+        } catch (e) {
+          debugPrint('Error parsing task JSON: $e, Data: $json');
+        }
+      }
+
+      return taskList;
+    } catch (e, stacktrace) {
+      debugPrint('Error fetching tasks: $e\nStacktrace: $stacktrace');
+      throw Exception('Failed to fetch tasks');
     }
   }
 
@@ -57,6 +80,14 @@ class TaskProvider extends _$TaskProvider {
     if (user == null) {
       throw Exception('User not logged in');
     }
+
+    final task = Task(
+      id: 'd',
+      taskType: TaskType.values.byName(taskType),
+      status: 'not_started',
+      duration: duration,
+      createdAt: DateTime.now(), // 현재 시간 사용
+    );
 
     await supabase.from('tasks').insert({
       'user_id': user.id,

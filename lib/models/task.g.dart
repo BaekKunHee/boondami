@@ -19,12 +19,12 @@ _$TaskImpl _$$TaskImplFromJson(Map<String, dynamic> json) => _$TaskImpl(
 Map<String, dynamic> _$$TaskImplToJson(_$TaskImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      if (instance.userId case final value?) 'user_id': value,
+      'user_id': instance.userId,
       'task_type': _$TaskTypeEnumMap[instance.taskType]!,
       'duration': instance.duration,
       'status': instance.status,
       'created_at': instance.createdAt.toIso8601String(),
-      if (instance.matchId case final value?) 'match_id': value,
+      'match_id': instance.matchId,
     };
 
 const _$TaskTypeEnumMap = {

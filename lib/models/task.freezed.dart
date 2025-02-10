@@ -183,11 +183,9 @@ class __$$TaskImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(
-    fieldRename: FieldRename.snake, includeIfNull: false, explicitToJson: true)
+@JsonSerializable()
 class _$TaskImpl implements _Task {
-  _$TaskImpl(
+  const _$TaskImpl(
       {required this.id,
       @JsonKey(name: 'user_id') this.userId,
       @JsonKey(name: 'task_type') required this.taskType,
@@ -262,7 +260,7 @@ class _$TaskImpl implements _Task {
 }
 
 abstract class _Task implements Task {
-  factory _Task(
+  const factory _Task(
       {required final String id,
       @JsonKey(name: 'user_id') final String? userId,
       @JsonKey(name: 'task_type') required final TaskType taskType,

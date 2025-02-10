@@ -28,6 +28,7 @@ class LoginController {
     required String email,
     required String password,
     required BuildContext context,
+    VoidCallback? onSuccess,
   }) async {
     try {
       final response = await Supabase.instance.client.auth.signInWithPassword(
@@ -51,6 +52,7 @@ class LoginController {
             const SnackBar(content: Text('로그인 성공!')),
           );
 
+          onSuccess?.call();
           context.go('/main');
         }
       }

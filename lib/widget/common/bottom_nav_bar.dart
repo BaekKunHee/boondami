@@ -23,15 +23,15 @@ class BottomNavBar extends ConsumerWidget {
     }
 
     final currentIndex = ref.watch(bottomNavIndexProvider);
-    final routes = ['/main', '/search', '/my'];
+    final routes = ['/main', '/calendar', '/my'];
     final bottomNavItems = [
       const BottomNavigationBarItem(
         icon: Icon(Icons.home),
         label: '홈',
       ),
       const BottomNavigationBarItem(
-        icon: Icon(Icons.search),
-        label: '검색',
+        icon: Icon(Icons.calendar_month),
+        label: '캘린더',
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.task),
