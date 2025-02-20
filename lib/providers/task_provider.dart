@@ -69,7 +69,6 @@ class TaskProvider extends _$TaskProvider {
     state = await AsyncValue.guard(() => _fetchTasks());
   }
 
-  
   // Task 상태 업데이트 메서드
   Future<void> updateTaskStatus({
     required String taskId,
@@ -88,3 +87,72 @@ class TaskProvider extends _$TaskProvider {
     refreshTasks();
   }
 }
+
+final groupTasksProvider =
+    StreamProvider.family<List<Task>, String>((ref, groupId) async* {
+  final supabase = Supabase.instance.client;
+
+  final initialData = await supabase.from('tasks').select('''
+        *,
+        task_assignments (
+          task_id,
+          user_id,
+          start_time,
+          end_time,
+          task_status,
+          profiles (
+            id,
+            nickname,
+            profile_url
+          )
+        )
+      ''').eq('group_id', groupId);
+
+  print('Task Data: $initialData');
+
+  yield (initialData as List).map((json) => Task.fromJson(json)).toList();
+
+  // 실시간 업데이트를 위한 구독
+  final subscription = supabase
+      .from('tasks')
+      .stream(primaryKey: ['id'])
+      .eq('group_id', groupId)
+      .listen((List<Map<String, dynamic>> data) {
+        final tasks = data.map((json) => Task.fromJson(json)).toList();
+        ref.state = AsyncData(tasks);
+      });
+
+  ref.onDispose(() {
+    subscription.cancel();
+  });
+});
+
+final memberTasksProvider =
+    StreamProvider.family<List<Task>, ({String groupId, String memberId})>(
+        (ref, params) async* {
+  final supabase = Supabase.instance.client;
+
+  // 초기 데이터 로드
+  final initialData = await supabase
+      .from('tasks')
+      .select()
+      .eq('group_id', params.groupId)
+      .eq('assigned_to', params.memberId);
+
+  yield (initialData as List).map((json) => Task.fromJson(json)).toList();
+
+  // 실시간 업데이트를 위한 구독
+  final subscription = supabase
+      .from('tasks')
+      .stream(primaryKey: ['id'])
+      .eq('group_id', params.groupId)
+      // .eq('assigned_to', params.memberId)
+      .listen((List<Map<String, dynamic>> data) {
+        final tasks = data.map((json) => Task.fromJson(json)).toList();
+        ref.state = AsyncData(tasks);
+      });
+
+  ref.onDispose(() {
+    subscription.cancel();
+  });
+});

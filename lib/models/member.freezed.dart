@@ -23,6 +23,7 @@ mixin _$Member {
   String get id => throw _privateConstructorUsedError;
   String get nickname => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
+  String? get profileImageUrl => throw _privateConstructorUsedError;
 
   /// Serializes this Member to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +39,7 @@ abstract class $MemberCopyWith<$Res> {
   factory $MemberCopyWith(Member value, $Res Function(Member) then) =
       _$MemberCopyWithImpl<$Res, Member>;
   @useResult
-  $Res call({String id, String nickname, String role});
+  $Res call({String id, String nickname, String role, String? profileImageUrl});
 }
 
 /// @nodoc
@@ -59,6 +60,7 @@ class _$MemberCopyWithImpl<$Res, $Val extends Member>
     Object? id = null,
     Object? nickname = null,
     Object? role = null,
+    Object? profileImageUrl = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -73,6 +75,10 @@ class _$MemberCopyWithImpl<$Res, $Val extends Member>
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as String,
+      profileImageUrl: freezed == profileImageUrl
+          ? _value.profileImageUrl
+          : profileImageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -84,7 +90,7 @@ abstract class _$$MemberImplCopyWith<$Res> implements $MemberCopyWith<$Res> {
       __$$MemberImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String nickname, String role});
+  $Res call({String id, String nickname, String role, String? profileImageUrl});
 }
 
 /// @nodoc
@@ -103,6 +109,7 @@ class __$$MemberImplCopyWithImpl<$Res>
     Object? id = null,
     Object? nickname = null,
     Object? role = null,
+    Object? profileImageUrl = freezed,
   }) {
     return _then(_$MemberImpl(
       id: null == id
@@ -117,6 +124,10 @@ class __$$MemberImplCopyWithImpl<$Res>
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as String,
+      profileImageUrl: freezed == profileImageUrl
+          ? _value.profileImageUrl
+          : profileImageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -125,7 +136,10 @@ class __$$MemberImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MemberImpl implements _Member {
   const _$MemberImpl(
-      {required this.id, required this.nickname, required this.role});
+      {required this.id,
+      required this.nickname,
+      required this.role,
+      this.profileImageUrl});
 
   factory _$MemberImpl.fromJson(Map<String, dynamic> json) =>
       _$$MemberImplFromJson(json);
@@ -136,10 +150,12 @@ class _$MemberImpl implements _Member {
   final String nickname;
   @override
   final String role;
+  @override
+  final String? profileImageUrl;
 
   @override
   String toString() {
-    return 'Member(id: $id, nickname: $nickname, role: $role)';
+    return 'Member(id: $id, nickname: $nickname, role: $role, profileImageUrl: $profileImageUrl)';
   }
 
   @override
@@ -150,12 +166,15 @@ class _$MemberImpl implements _Member {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
-            (identical(other.role, role) || other.role == role));
+            (identical(other.role, role) || other.role == role) &&
+            (identical(other.profileImageUrl, profileImageUrl) ||
+                other.profileImageUrl == profileImageUrl));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, nickname, role);
+  int get hashCode =>
+      Object.hash(runtimeType, id, nickname, role, profileImageUrl);
 
   /// Create a copy of Member
   /// with the given fields replaced by the non-null parameter values.
@@ -177,7 +196,8 @@ abstract class _Member implements Member {
   const factory _Member(
       {required final String id,
       required final String nickname,
-      required final String role}) = _$MemberImpl;
+      required final String role,
+      final String? profileImageUrl}) = _$MemberImpl;
 
   factory _Member.fromJson(Map<String, dynamic> json) = _$MemberImpl.fromJson;
 
@@ -187,6 +207,8 @@ abstract class _Member implements Member {
   String get nickname;
   @override
   String get role;
+  @override
+  String? get profileImageUrl;
 
   /// Create a copy of Member
   /// with the given fields replaced by the non-null parameter values.

@@ -1,7 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:jobmoim/screens/calendar/calendar_page.dart';
 import 'package:jobmoim/screens/invite/invite_accept_page.dart';
 
 import '../screens/create_group/create_group_page.dart';
@@ -42,10 +41,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/login',
         builder: (context, state) => LoginPage(),
       ),
-      GoRoute(
-        path: '/calendar',
-        builder: (context, state) => const CalendarPage(),
-      ),
+
       GoRoute(
         path: '/main',
         builder: (context, state) => const MainPage(),

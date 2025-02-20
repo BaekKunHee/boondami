@@ -5,6 +5,7 @@ import 'package:jobmoim/models/member.dart';
 import 'package:jobmoim/providers/group_provider.dart';
 import 'package:jobmoim/screens/group_detail/widgets/add_task_button.dart';
 import 'package:jobmoim/screens/group_detail/widgets/add_task_modal.dart';
+import 'package:jobmoim/screens/group_detail/widgets/daily_task_view.dart';
 
 class GroupDetailPage extends ConsumerStatefulWidget {
   final String groupId;
@@ -103,12 +104,17 @@ class _GroupDetailPageState extends ConsumerState<GroupDetailPage> {
             ),
           ),
           Expanded(
-            child: Center(
-              child: Text(
-                viewMode == ViewMode.daily ? '일간 뷰' : '월간 뷰',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            ),
+            child: viewMode == ViewMode.daily
+                ? DailyTaskView(
+                    groupId: widget.groupId,
+                    selectedMember: selectedMember,
+                  )
+                : Center(
+                    child: Text(
+                      '월간 뷰',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ),
           ),
         ],
       ),
