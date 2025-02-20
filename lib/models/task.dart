@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:jobmoim/models/task_assignment.dart';
+import 'package:jobmoim/models/task_category.dart';
 
 part 'task.freezed.dart';
 part 'task.g.dart';
@@ -23,35 +25,8 @@ class Task with _$Task {
     required String description,
     @JsonKey(name: 'task_assignments')
     required List<TaskAssignment> taskAssignments,
-    
+    @JsonKey(name: 'task_categories') TaskCategory? taskCategories,
   }) = _Task;
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
-}
-
-@freezed
-class TaskAssignment with _$TaskAssignment {
-  const factory TaskAssignment({
-    @JsonKey(name: 'task_id') required String taskId,
-    @JsonKey(name: 'user_id') required String userId,
-    @JsonKey(name: 'start_time') required DateTime startTime,
-    @JsonKey(name: 'end_time') required DateTime endTime,
-    @JsonKey(name: 'task_status') required String taskStatus,
-    required Profile profiles,
-  }) = _TaskAssignment;
-
-  factory TaskAssignment.fromJson(Map<String, dynamic> json) =>
-      _$TaskAssignmentFromJson(json);
-}
-
-@freezed
-class Profile with _$Profile {
-  const factory Profile({
-    required String id,
-    required String nickname,
-    @JsonKey(name: 'profile_url') String? profileUrl,
-  }) = _Profile;
-
-  factory Profile.fromJson(Map<String, dynamic> json) =>
-      _$ProfileFromJson(json);
 }

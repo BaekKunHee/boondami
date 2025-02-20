@@ -30,6 +30,8 @@ mixin _$Task {
   @JsonKey(name: 'task_assignments')
   List<TaskAssignment> get taskAssignments =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'task_categories')
+  TaskCategory? get taskCategories => throw _privateConstructorUsedError;
 
   /// Serializes this Task to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +53,10 @@ abstract class $TaskCopyWith<$Res> {
       @JsonKey(name: 'category_id') String categoryId,
       String title,
       String description,
-      @JsonKey(name: 'task_assignments') List<TaskAssignment> taskAssignments});
+      @JsonKey(name: 'task_assignments') List<TaskAssignment> taskAssignments,
+      @JsonKey(name: 'task_categories') TaskCategory? taskCategories});
+
+  $TaskCategoryCopyWith<$Res>? get taskCategories;
 }
 
 /// @nodoc
@@ -75,6 +80,7 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? title = null,
     Object? description = null,
     Object? taskAssignments = null,
+    Object? taskCategories = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -101,7 +107,25 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.taskAssignments
           : taskAssignments // ignore: cast_nullable_to_non_nullable
               as List<TaskAssignment>,
+      taskCategories: freezed == taskCategories
+          ? _value.taskCategories
+          : taskCategories // ignore: cast_nullable_to_non_nullable
+              as TaskCategory?,
     ) as $Val);
+  }
+
+  /// Create a copy of Task
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TaskCategoryCopyWith<$Res>? get taskCategories {
+    if (_value.taskCategories == null) {
+      return null;
+    }
+
+    return $TaskCategoryCopyWith<$Res>(_value.taskCategories!, (value) {
+      return _then(_value.copyWith(taskCategories: value) as $Val);
+    });
   }
 }
 
@@ -118,7 +142,11 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       @JsonKey(name: 'category_id') String categoryId,
       String title,
       String description,
-      @JsonKey(name: 'task_assignments') List<TaskAssignment> taskAssignments});
+      @JsonKey(name: 'task_assignments') List<TaskAssignment> taskAssignments,
+      @JsonKey(name: 'task_categories') TaskCategory? taskCategories});
+
+  @override
+  $TaskCategoryCopyWith<$Res>? get taskCategories;
 }
 
 /// @nodoc
@@ -139,6 +167,7 @@ class __$$TaskImplCopyWithImpl<$Res>
     Object? title = null,
     Object? description = null,
     Object? taskAssignments = null,
+    Object? taskCategories = freezed,
   }) {
     return _then(_$TaskImpl(
       id: null == id
@@ -165,6 +194,10 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value._taskAssignments
           : taskAssignments // ignore: cast_nullable_to_non_nullable
               as List<TaskAssignment>,
+      taskCategories: freezed == taskCategories
+          ? _value.taskCategories
+          : taskCategories // ignore: cast_nullable_to_non_nullable
+              as TaskCategory?,
     ));
   }
 }
@@ -179,7 +212,8 @@ class _$TaskImpl implements _Task {
       required this.title,
       required this.description,
       @JsonKey(name: 'task_assignments')
-      required final List<TaskAssignment> taskAssignments})
+      required final List<TaskAssignment> taskAssignments,
+      @JsonKey(name: 'task_categories') this.taskCategories})
       : _taskAssignments = taskAssignments;
 
   factory _$TaskImpl.fromJson(Map<String, dynamic> json) =>
@@ -207,8 +241,12 @@ class _$TaskImpl implements _Task {
   }
 
   @override
+  @JsonKey(name: 'task_categories')
+  final TaskCategory? taskCategories;
+
+  @override
   String toString() {
-    return 'Task(id: $id, groupId: $groupId, categoryId: $categoryId, title: $title, description: $description, taskAssignments: $taskAssignments)';
+    return 'Task(id: $id, groupId: $groupId, categoryId: $categoryId, title: $title, description: $description, taskAssignments: $taskAssignments, taskCategories: $taskCategories)';
   }
 
   @override
@@ -224,13 +262,22 @@ class _$TaskImpl implements _Task {
             (identical(other.description, description) ||
                 other.description == description) &&
             const DeepCollectionEquality()
-                .equals(other._taskAssignments, _taskAssignments));
+                .equals(other._taskAssignments, _taskAssignments) &&
+            (identical(other.taskCategories, taskCategories) ||
+                other.taskCategories == taskCategories));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, groupId, categoryId, title,
-      description, const DeepCollectionEquality().hash(_taskAssignments));
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      groupId,
+      categoryId,
+      title,
+      description,
+      const DeepCollectionEquality().hash(_taskAssignments),
+      taskCategories);
 
   /// Create a copy of Task
   /// with the given fields replaced by the non-null parameter values.
@@ -256,7 +303,9 @@ abstract class _Task implements Task {
       required final String title,
       required final String description,
       @JsonKey(name: 'task_assignments')
-      required final List<TaskAssignment> taskAssignments}) = _$TaskImpl;
+      required final List<TaskAssignment> taskAssignments,
+      @JsonKey(name: 'task_categories')
+      final TaskCategory? taskCategories}) = _$TaskImpl;
 
   factory _Task.fromJson(Map<String, dynamic> json) = _$TaskImpl.fromJson;
 
@@ -275,493 +324,14 @@ abstract class _Task implements Task {
   @override
   @JsonKey(name: 'task_assignments')
   List<TaskAssignment> get taskAssignments;
+  @override
+  @JsonKey(name: 'task_categories')
+  TaskCategory? get taskCategories;
 
   /// Create a copy of Task
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TaskImplCopyWith<_$TaskImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-TaskAssignment _$TaskAssignmentFromJson(Map<String, dynamic> json) {
-  return _TaskAssignment.fromJson(json);
-}
-
-/// @nodoc
-mixin _$TaskAssignment {
-  @JsonKey(name: 'task_id')
-  String get taskId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'user_id')
-  String get userId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'start_time')
-  DateTime get startTime => throw _privateConstructorUsedError;
-  @JsonKey(name: 'end_time')
-  DateTime get endTime => throw _privateConstructorUsedError;
-  @JsonKey(name: 'task_status')
-  String get taskStatus => throw _privateConstructorUsedError;
-  Profile get profiles => throw _privateConstructorUsedError;
-
-  /// Serializes this TaskAssignment to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of TaskAssignment
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $TaskAssignmentCopyWith<TaskAssignment> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $TaskAssignmentCopyWith<$Res> {
-  factory $TaskAssignmentCopyWith(
-          TaskAssignment value, $Res Function(TaskAssignment) then) =
-      _$TaskAssignmentCopyWithImpl<$Res, TaskAssignment>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'task_id') String taskId,
-      @JsonKey(name: 'user_id') String userId,
-      @JsonKey(name: 'start_time') DateTime startTime,
-      @JsonKey(name: 'end_time') DateTime endTime,
-      @JsonKey(name: 'task_status') String taskStatus,
-      Profile profiles});
-
-  $ProfileCopyWith<$Res> get profiles;
-}
-
-/// @nodoc
-class _$TaskAssignmentCopyWithImpl<$Res, $Val extends TaskAssignment>
-    implements $TaskAssignmentCopyWith<$Res> {
-  _$TaskAssignmentCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of TaskAssignment
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? taskId = null,
-    Object? userId = null,
-    Object? startTime = null,
-    Object? endTime = null,
-    Object? taskStatus = null,
-    Object? profiles = null,
-  }) {
-    return _then(_value.copyWith(
-      taskId: null == taskId
-          ? _value.taskId
-          : taskId // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      endTime: null == endTime
-          ? _value.endTime
-          : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      taskStatus: null == taskStatus
-          ? _value.taskStatus
-          : taskStatus // ignore: cast_nullable_to_non_nullable
-              as String,
-      profiles: null == profiles
-          ? _value.profiles
-          : profiles // ignore: cast_nullable_to_non_nullable
-              as Profile,
-    ) as $Val);
-  }
-
-  /// Create a copy of TaskAssignment
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ProfileCopyWith<$Res> get profiles {
-    return $ProfileCopyWith<$Res>(_value.profiles, (value) {
-      return _then(_value.copyWith(profiles: value) as $Val);
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$$TaskAssignmentImplCopyWith<$Res>
-    implements $TaskAssignmentCopyWith<$Res> {
-  factory _$$TaskAssignmentImplCopyWith(_$TaskAssignmentImpl value,
-          $Res Function(_$TaskAssignmentImpl) then) =
-      __$$TaskAssignmentImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'task_id') String taskId,
-      @JsonKey(name: 'user_id') String userId,
-      @JsonKey(name: 'start_time') DateTime startTime,
-      @JsonKey(name: 'end_time') DateTime endTime,
-      @JsonKey(name: 'task_status') String taskStatus,
-      Profile profiles});
-
-  @override
-  $ProfileCopyWith<$Res> get profiles;
-}
-
-/// @nodoc
-class __$$TaskAssignmentImplCopyWithImpl<$Res>
-    extends _$TaskAssignmentCopyWithImpl<$Res, _$TaskAssignmentImpl>
-    implements _$$TaskAssignmentImplCopyWith<$Res> {
-  __$$TaskAssignmentImplCopyWithImpl(
-      _$TaskAssignmentImpl _value, $Res Function(_$TaskAssignmentImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of TaskAssignment
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? taskId = null,
-    Object? userId = null,
-    Object? startTime = null,
-    Object? endTime = null,
-    Object? taskStatus = null,
-    Object? profiles = null,
-  }) {
-    return _then(_$TaskAssignmentImpl(
-      taskId: null == taskId
-          ? _value.taskId
-          : taskId // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      endTime: null == endTime
-          ? _value.endTime
-          : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      taskStatus: null == taskStatus
-          ? _value.taskStatus
-          : taskStatus // ignore: cast_nullable_to_non_nullable
-              as String,
-      profiles: null == profiles
-          ? _value.profiles
-          : profiles // ignore: cast_nullable_to_non_nullable
-              as Profile,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$TaskAssignmentImpl implements _TaskAssignment {
-  const _$TaskAssignmentImpl(
-      {@JsonKey(name: 'task_id') required this.taskId,
-      @JsonKey(name: 'user_id') required this.userId,
-      @JsonKey(name: 'start_time') required this.startTime,
-      @JsonKey(name: 'end_time') required this.endTime,
-      @JsonKey(name: 'task_status') required this.taskStatus,
-      required this.profiles});
-
-  factory _$TaskAssignmentImpl.fromJson(Map<String, dynamic> json) =>
-      _$$TaskAssignmentImplFromJson(json);
-
-  @override
-  @JsonKey(name: 'task_id')
-  final String taskId;
-  @override
-  @JsonKey(name: 'user_id')
-  final String userId;
-  @override
-  @JsonKey(name: 'start_time')
-  final DateTime startTime;
-  @override
-  @JsonKey(name: 'end_time')
-  final DateTime endTime;
-  @override
-  @JsonKey(name: 'task_status')
-  final String taskStatus;
-  @override
-  final Profile profiles;
-
-  @override
-  String toString() {
-    return 'TaskAssignment(taskId: $taskId, userId: $userId, startTime: $startTime, endTime: $endTime, taskStatus: $taskStatus, profiles: $profiles)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$TaskAssignmentImpl &&
-            (identical(other.taskId, taskId) || other.taskId == taskId) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.startTime, startTime) ||
-                other.startTime == startTime) &&
-            (identical(other.endTime, endTime) || other.endTime == endTime) &&
-            (identical(other.taskStatus, taskStatus) ||
-                other.taskStatus == taskStatus) &&
-            (identical(other.profiles, profiles) ||
-                other.profiles == profiles));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, taskId, userId, startTime, endTime, taskStatus, profiles);
-
-  /// Create a copy of TaskAssignment
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$TaskAssignmentImplCopyWith<_$TaskAssignmentImpl> get copyWith =>
-      __$$TaskAssignmentImplCopyWithImpl<_$TaskAssignmentImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$TaskAssignmentImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _TaskAssignment implements TaskAssignment {
-  const factory _TaskAssignment(
-      {@JsonKey(name: 'task_id') required final String taskId,
-      @JsonKey(name: 'user_id') required final String userId,
-      @JsonKey(name: 'start_time') required final DateTime startTime,
-      @JsonKey(name: 'end_time') required final DateTime endTime,
-      @JsonKey(name: 'task_status') required final String taskStatus,
-      required final Profile profiles}) = _$TaskAssignmentImpl;
-
-  factory _TaskAssignment.fromJson(Map<String, dynamic> json) =
-      _$TaskAssignmentImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'task_id')
-  String get taskId;
-  @override
-  @JsonKey(name: 'user_id')
-  String get userId;
-  @override
-  @JsonKey(name: 'start_time')
-  DateTime get startTime;
-  @override
-  @JsonKey(name: 'end_time')
-  DateTime get endTime;
-  @override
-  @JsonKey(name: 'task_status')
-  String get taskStatus;
-  @override
-  Profile get profiles;
-
-  /// Create a copy of TaskAssignment
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$TaskAssignmentImplCopyWith<_$TaskAssignmentImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Profile _$ProfileFromJson(Map<String, dynamic> json) {
-  return _Profile.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Profile {
-  String get id => throw _privateConstructorUsedError;
-  String get nickname => throw _privateConstructorUsedError;
-  @JsonKey(name: 'profile_url')
-  String? get profileUrl => throw _privateConstructorUsedError;
-
-  /// Serializes this Profile to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Profile
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $ProfileCopyWith<Profile> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ProfileCopyWith<$Res> {
-  factory $ProfileCopyWith(Profile value, $Res Function(Profile) then) =
-      _$ProfileCopyWithImpl<$Res, Profile>;
-  @useResult
-  $Res call(
-      {String id,
-      String nickname,
-      @JsonKey(name: 'profile_url') String? profileUrl});
-}
-
-/// @nodoc
-class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
-    implements $ProfileCopyWith<$Res> {
-  _$ProfileCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Profile
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? nickname = null,
-    Object? profileUrl = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      nickname: null == nickname
-          ? _value.nickname
-          : nickname // ignore: cast_nullable_to_non_nullable
-              as String,
-      profileUrl: freezed == profileUrl
-          ? _value.profileUrl
-          : profileUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
-  factory _$$ProfileImplCopyWith(
-          _$ProfileImpl value, $Res Function(_$ProfileImpl) then) =
-      __$$ProfileImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String id,
-      String nickname,
-      @JsonKey(name: 'profile_url') String? profileUrl});
-}
-
-/// @nodoc
-class __$$ProfileImplCopyWithImpl<$Res>
-    extends _$ProfileCopyWithImpl<$Res, _$ProfileImpl>
-    implements _$$ProfileImplCopyWith<$Res> {
-  __$$ProfileImplCopyWithImpl(
-      _$ProfileImpl _value, $Res Function(_$ProfileImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of Profile
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? nickname = null,
-    Object? profileUrl = freezed,
-  }) {
-    return _then(_$ProfileImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      nickname: null == nickname
-          ? _value.nickname
-          : nickname // ignore: cast_nullable_to_non_nullable
-              as String,
-      profileUrl: freezed == profileUrl
-          ? _value.profileUrl
-          : profileUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$ProfileImpl implements _Profile {
-  const _$ProfileImpl(
-      {required this.id,
-      required this.nickname,
-      @JsonKey(name: 'profile_url') this.profileUrl});
-
-  factory _$ProfileImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ProfileImplFromJson(json);
-
-  @override
-  final String id;
-  @override
-  final String nickname;
-  @override
-  @JsonKey(name: 'profile_url')
-  final String? profileUrl;
-
-  @override
-  String toString() {
-    return 'Profile(id: $id, nickname: $nickname, profileUrl: $profileUrl)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProfileImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.nickname, nickname) ||
-                other.nickname == nickname) &&
-            (identical(other.profileUrl, profileUrl) ||
-                other.profileUrl == profileUrl));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, nickname, profileUrl);
-
-  /// Create a copy of Profile
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>
-      __$$ProfileImplCopyWithImpl<_$ProfileImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ProfileImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _Profile implements Profile {
-  const factory _Profile(
-      {required final String id,
-      required final String nickname,
-      @JsonKey(name: 'profile_url') final String? profileUrl}) = _$ProfileImpl;
-
-  factory _Profile.fromJson(Map<String, dynamic> json) = _$ProfileImpl.fromJson;
-
-  @override
-  String get id;
-  @override
-  String get nickname;
-  @override
-  @JsonKey(name: 'profile_url')
-  String? get profileUrl;
-
-  /// Create a copy of Profile
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

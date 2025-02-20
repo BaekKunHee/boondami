@@ -93,24 +93,34 @@ final groupTasksProvider =
   final supabase = Supabase.instance.client;
 
   final initialData = await supabase.from('tasks').select('''
-        *,
-        task_assignments (
-          task_id,
-          user_id,
-          start_time,
-          end_time,
-          task_status,
-          profiles (
-            id,
-            nickname,
-            profile_url
-          )
-        )
-      ''').eq('group_id', groupId);
+    *,
+    task_assignments (
+      task_id,
+      user_id,
+      start_time,
+      end_time,
+      task_status,
+      profiles (
+        id,
+        nickname,
+        profile_url
+      )
+    ),
+    task_categories (
+      id,
+      name
+    )
+  ''').eq('group_id', groupId);
 
   print('Task Data: $initialData');
 
-  yield (initialData as List).map((json) => Task.fromJson(json)).toList();
+  yield (initialData as List).map((json) {
+    final taskCategories = json['task_categories'];
+    if (taskCategories == null) {
+      json['task_categories'] = {'id': '', 'name': ''}; // 기본값 제공
+    }
+    return Task.fromJson(json);
+  }).toList();
 
   // 실시간 업데이트를 위한 구독
   final subscription = supabase
