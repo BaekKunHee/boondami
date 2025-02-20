@@ -30,12 +30,12 @@ class BottomNavBar extends ConsumerWidget {
         label: '홈',
       ),
       const BottomNavigationBarItem(
-        icon: Icon(Icons.calendar_month),
-        label: '캘린더',
+        icon: Icon(Icons.bar_chart),
+        label: '통계',
       ),
       const BottomNavigationBarItem(
-        icon: Icon(Icons.task),
-        label: '나의 할일',
+        icon: Icon(Icons.settings),
+        label: '설정',
       ),
     ];
 

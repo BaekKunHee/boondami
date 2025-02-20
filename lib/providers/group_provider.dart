@@ -1,3 +1,4 @@
+import 'package:jobmoim/models/member.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -161,3 +162,25 @@ class GroupProvider extends _$GroupProvider {
     }
   }
 }
+
+final groupMembersProvider =
+    FutureProvider.family<List<Member>, String>((ref, groupId) async {
+  final supabase = Supabase.instance.client;
+  final response = await supabase.from('group_members').select('''
+      user_id,
+      role,
+      profiles!inner (
+        nickname
+      )
+    ''').eq('group_id', groupId);
+
+  final List<Member> members = (response as List)
+      .map((member) => Member(
+            id: member['user_id'],
+            role: member['role'],
+            nickname: member['profiles']['nickname'],
+          ))
+      .toList();
+
+  return members;
+});

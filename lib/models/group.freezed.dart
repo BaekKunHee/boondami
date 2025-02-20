@@ -23,8 +23,9 @@ mixin _$Group {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
   int get memberCount => throw _privateConstructorUsedError;
+  List<Member> get members => throw _privateConstructorUsedError;
 
   /// Serializes this Group to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,8 +44,9 @@ abstract class $GroupCopyWith<$Res> {
   $Res call(
       {String id,
       String name,
-      @JsonKey(name: 'created_at') DateTime createdAt,
-      int memberCount});
+      @JsonKey(name: 'created_at') DateTime? createdAt,
+      int memberCount,
+      List<Member> members});
 }
 
 /// @nodoc
@@ -64,8 +66,9 @@ class _$GroupCopyWithImpl<$Res, $Val extends Group>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
     Object? memberCount = null,
+    Object? members = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -76,14 +79,18 @@ class _$GroupCopyWithImpl<$Res, $Val extends Group>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       memberCount: null == memberCount
           ? _value.memberCount
           : memberCount // ignore: cast_nullable_to_non_nullable
               as int,
+      members: null == members
+          ? _value.members
+          : members // ignore: cast_nullable_to_non_nullable
+              as List<Member>,
     ) as $Val);
   }
 }
@@ -98,8 +105,9 @@ abstract class _$$GroupImplCopyWith<$Res> implements $GroupCopyWith<$Res> {
   $Res call(
       {String id,
       String name,
-      @JsonKey(name: 'created_at') DateTime createdAt,
-      int memberCount});
+      @JsonKey(name: 'created_at') DateTime? createdAt,
+      int memberCount,
+      List<Member> members});
 }
 
 /// @nodoc
@@ -117,8 +125,9 @@ class __$$GroupImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
     Object? memberCount = null,
+    Object? members = null,
   }) {
     return _then(_$GroupImpl(
       id: null == id
@@ -129,14 +138,18 @@ class __$$GroupImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       memberCount: null == memberCount
           ? _value.memberCount
           : memberCount // ignore: cast_nullable_to_non_nullable
               as int,
+      members: null == members
+          ? _value._members
+          : members // ignore: cast_nullable_to_non_nullable
+              as List<Member>,
     ));
   }
 }
@@ -147,8 +160,10 @@ class _$GroupImpl implements _Group {
   const _$GroupImpl(
       {required this.id,
       required this.name,
-      @JsonKey(name: 'created_at') required this.createdAt,
-      this.memberCount = 0});
+      @JsonKey(name: 'created_at') this.createdAt,
+      this.memberCount = 0,
+      final List<Member> members = const []})
+      : _members = members;
 
   factory _$GroupImpl.fromJson(Map<String, dynamic> json) =>
       _$$GroupImplFromJson(json);
@@ -159,14 +174,22 @@ class _$GroupImpl implements _Group {
   final String name;
   @override
   @JsonKey(name: 'created_at')
-  final DateTime createdAt;
+  final DateTime? createdAt;
   @override
   @JsonKey()
   final int memberCount;
+  final List<Member> _members;
+  @override
+  @JsonKey()
+  List<Member> get members {
+    if (_members is EqualUnmodifiableListView) return _members;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_members);
+  }
 
   @override
   String toString() {
-    return 'Group(id: $id, name: $name, createdAt: $createdAt, memberCount: $memberCount)';
+    return 'Group(id: $id, name: $name, createdAt: $createdAt, memberCount: $memberCount, members: $members)';
   }
 
   @override
@@ -179,13 +202,14 @@ class _$GroupImpl implements _Group {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.memberCount, memberCount) ||
-                other.memberCount == memberCount));
+                other.memberCount == memberCount) &&
+            const DeepCollectionEquality().equals(other._members, _members));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, createdAt, memberCount);
+  int get hashCode => Object.hash(runtimeType, id, name, createdAt, memberCount,
+      const DeepCollectionEquality().hash(_members));
 
   /// Create a copy of Group
   /// with the given fields replaced by the non-null parameter values.
@@ -207,8 +231,9 @@ abstract class _Group implements Group {
   const factory _Group(
       {required final String id,
       required final String name,
-      @JsonKey(name: 'created_at') required final DateTime createdAt,
-      final int memberCount}) = _$GroupImpl;
+      @JsonKey(name: 'created_at') final DateTime? createdAt,
+      final int memberCount,
+      final List<Member> members}) = _$GroupImpl;
 
   factory _Group.fromJson(Map<String, dynamic> json) = _$GroupImpl.fromJson;
 
@@ -218,9 +243,11 @@ abstract class _Group implements Group {
   String get name;
   @override
   @JsonKey(name: 'created_at')
-  DateTime get createdAt;
+  DateTime? get createdAt;
   @override
   int get memberCount;
+  @override
+  List<Member> get members;
 
   /// Create a copy of Group
   /// with the given fields replaced by the non-null parameter values.

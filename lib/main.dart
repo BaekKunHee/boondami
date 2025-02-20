@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jobmoim/assets/style/colors.dart';
-import 'package:jobmoim/providers/main_provider.dart';
 import 'package:jobmoim/routes/app_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,7 +18,6 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mainController = ref.watch(mainProviderProvider.notifier);
     final router = ref.watch(routerProvider);
     return ProviderScope(
       child: Consumer(
