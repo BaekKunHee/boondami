@@ -22,6 +22,13 @@ class _MainPageState extends ConsumerState<MainPage> {
   ViewMode viewMode = ViewMode.daily;
   String? groupId;
 
+  // 전체 선택을 위한 특별한 Member 객체 생성
+  final allMember = const Member(
+    id: 'all',
+    nickname: '전체',
+    role: 'all',
+  );
+
   @override
   Widget build(BuildContext context) {
     final groupsAsync = ref.watch(groupProviderProvider);
@@ -71,13 +78,14 @@ class _MainPageState extends ConsumerState<MainPage> {
                 const SizedBox(width: 16),
                 membersAsync.when(
                   data: (members) => BMPopupMenuButton<Member?>(
-                    value: selectedMember,
-                    items: [null, ...members],
+                    value: selectedMember ?? allMember,
+                    items: [allMember, ...members],
                     hint: '전체',
                     getLabel: (member) => member?.nickname ?? '전체',
                     onChanged: (Member? newValue) {
                       setState(() {
-                        selectedMember = newValue;
+                        selectedMember =
+                            newValue?.id == 'all' ? null : newValue;
                       });
                     },
                   ),

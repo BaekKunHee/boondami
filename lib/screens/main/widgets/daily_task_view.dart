@@ -16,18 +16,23 @@ class DailyTaskView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tasksAsync = selectedMember == null
-        ? ref.watch(groupTasksProvider(groupId))
-        : ref.watch(memberTasksProvider(
-            (groupId: groupId, memberId: selectedMember!.id)));
-    print(tasksAsync);
+    final tasksAsync = ref.watch(groupTasksProvider(groupId));
 
     return tasksAsync.when(
       data: (tasks) {
+        // selectedMember가 null이면 모든 태스크를 보여주고,
+        // 아니면 선택된 멤버의 태스크만 필터링
+        final filteredTasks = selectedMember == null
+            ? tasks
+            : tasks
+                .where((task) => task.taskAssignments.any((assignment) =>
+                    assignment.profiles.id == selectedMember?.id))
+                .toList();
+
         return ListView.builder(
           itemCount: 24,
           itemBuilder: (context, hour) {
-            final tasksAtHour = tasks.where((task) {
+            final tasksAtHour = filteredTasks.where((task) {
               return task.taskAssignments
                   .any((assignment) => assignment.startTime.hour == hour);
             }).toList();

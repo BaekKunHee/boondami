@@ -43,7 +43,7 @@ class MyApp extends ConsumerWidget {
               fontFamily: 'JGaegujaengyi',
               useMaterial3: true,
               colorScheme: ColorScheme.fromSeed(
-                seedColor: CustomColors.background,
+                seedColor: CustomColors.white,
               ),
             ),
           );
