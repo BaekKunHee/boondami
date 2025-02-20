@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jobmoim/models/group.dart';
 import 'package:jobmoim/models/member.dart';
 import 'package:jobmoim/providers/group_provider.dart';
+import 'package:jobmoim/screens/group_detail/widgets/add_task_button.dart';
+import 'package:jobmoim/screens/group_detail/widgets/add_task_modal.dart';
 
 class GroupDetailPage extends ConsumerStatefulWidget {
   final String groupId;
@@ -109,6 +111,15 @@ class _GroupDetailPageState extends ConsumerState<GroupDetailPage> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: AddTaskButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => AddTaskModal(groupId: widget.groupId),
+          );
+        },
       ),
     );
   }

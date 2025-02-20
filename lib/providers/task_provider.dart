@@ -69,36 +69,7 @@ class TaskProvider extends _$TaskProvider {
     state = await AsyncValue.guard(() => _fetchTasks());
   }
 
-  // Task 생성 메서드
-  Future<void> createTask({
-    required String taskType,
-    required int duration,
-  }) async {
-    final supabase = Supabase.instance.client;
-    final user = supabase.auth.currentUser;
-
-    if (user == null) {
-      throw Exception('User not logged in');
-    }
-
-    final task = Task(
-      id: 'd',
-      taskType: TaskType.values.byName(taskType),
-      status: 'not_started',
-      duration: duration,
-      createdAt: DateTime.now(), // 현재 시간 사용
-    );
-
-    await supabase.from('tasks').insert({
-      'user_id': user.id,
-      'task_type': taskType,
-      'duration': duration,
-      'status': 'not_started',
-    });
-
-    refreshTasks();
-  }
-
+  
   // Task 상태 업데이트 메서드
   Future<void> updateTaskStatus({
     required String taskId,
