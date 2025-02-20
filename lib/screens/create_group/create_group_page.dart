@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jobmoim/providers/group_provider.dart';
-import 'package:jobmoim/widget/common/bm_button.dart';
+import 'package:jobmoim/widgets/common/bm_button.dart';
 
 class CreateGroupPage extends ConsumerWidget {
   const CreateGroupPage({super.key});

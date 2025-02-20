@@ -145,18 +145,41 @@ final memberTasksProvider =
   // 초기 데이터 로드
   final initialData = await supabase
       .from('tasks')
-      .select()
+      .select('''
+    *,
+    task_assignments!inner (
+      task_id,
+      user_id,
+      start_time,
+      end_time,
+      task_status,
+      profiles (
+        id,
+        nickname,
+        profile_url
+      )
+    ),
+    task_categories (
+      id,
+      name
+    )
+  ''')
       .eq('group_id', params.groupId)
-      .eq('assigned_to', params.memberId);
+      .eq('task_assignments.profile_id', params.memberId);
 
-  yield (initialData as List).map((json) => Task.fromJson(json)).toList();
+  yield (initialData as List).map((json) {
+    final taskCategories = json['task_categories'];
+    if (taskCategories == null) {
+      json['task_categories'] = {'id': '', 'name': ''}; // 기본값 제공
+    }
+    return Task.fromJson(json);
+  }).toList();
 
   // 실시간 업데이트를 위한 구독
   final subscription = supabase
       .from('tasks')
       .stream(primaryKey: ['id'])
       .eq('group_id', params.groupId)
-      // .eq('assigned_to', params.memberId)
       .listen((List<Map<String, dynamic>> data) {
         final tasks = data.map((json) => Task.fromJson(json)).toList();
         ref.state = AsyncData(tasks);

@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jobmoim/screens/invite/invite_accept_page.dart';
 
 import '../screens/create_group/create_group_page.dart';
-import '../screens/group_detail/group_detail_page.dart';
 import '../screens/login/login_page.dart';
 import '../screens/main/main_page.dart';
 
@@ -50,12 +49,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/create-group',
         builder: (context, state) => const CreateGroupPage(),
       ),
-      GoRoute(
-        path: '/group/:id',
-        builder: (context, state) => GroupDetailPage(
-          groupId: state.pathParameters['id']!,
-        ),
-      ),
+
       GoRoute(
         path: '/invite/:id',
         builder: (context, state) => InviteAcceptPage(

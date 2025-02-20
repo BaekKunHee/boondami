@@ -3,16 +3,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class BMImage extends StatelessWidget {
   final String imageUrl; // 이미지 URL 또는 경로
-  final double? width; // 이미지 너비
-  final double? height; // 이미지 높이
+  final double width; // 이미지 너비
+  final double height; // 이미지 높이
   final BoxFit? fit; // 이미지 비율 조정 옵션
   final ImageType imageType; // 이미지 타입 지정
 
   const BMImage({
     super.key,
     required this.imageUrl,
-    this.width,
-    this.height,
+    this.width = 24,
+    this.height = 24,
     this.fit,
     required this.imageType,
   });

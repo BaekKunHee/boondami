@@ -1,244 +1,130 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:jobmoim/enums/view_mode.dart';
+import 'package:jobmoim/models/group.dart';
+import 'package:jobmoim/models/member.dart';
 import 'package:jobmoim/providers/group_provider.dart';
-import 'package:jobmoim/providers/main_provider.dart';
-import 'package:jobmoim/widget/common/bottom_nav_bar.dart';
+import 'package:jobmoim/screens/main/widgets/add_task_button.dart';
+import 'package:jobmoim/screens/main/widgets/add_task_modal.dart';
+import 'package:jobmoim/screens/main/widgets/daily_task_view.dart';
+import 'package:jobmoim/widgets/common/bm_dropdown.dart';
+import 'package:jobmoim/widgets/common/bm_image.dart';
 
-class MainPage extends ConsumerWidget {
+class MainPage extends ConsumerStatefulWidget {
   const MainPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final profileAsync = ref.watch(mainProvider);
+  ConsumerState<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends ConsumerState<MainPage> {
+  Member? selectedMember;
+  ViewMode viewMode = ViewMode.daily;
+  String? groupId;
+
+  @override
+  Widget build(BuildContext context) {
+    final groupsAsync = ref.watch(groupProviderProvider);
+
+    if (groupId == null) {
+      groupsAsync.whenData((groups) {
+        if (groups.isNotEmpty) {
+          setState(() {
+            groupId = groups.first.id;
+          });
+        }
+      });
+    }
+
+    final membersAsync = ref.watch(groupMembersProvider(groupId ?? ''));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('홈'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              // TODO: 메뉴 기능 구현
-            },
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                groupsAsync.when(
+                  data: (groups) {
+                    final currentGroup = groups.firstWhere(
+                      (g) => g.id == groupId,
+                      orElse: () =>
+                          const Group(id: '', name: '없음', createdAt: null),
+                    );
+                    return BMPopupMenuButton<Group>(
+                      value: currentGroup,
+                      items: groups,
+                      onChanged: (group) {
+                        if (group != null) {
+                          setState(() {
+                            groupId = group.id;
+                          });
+                        }
+                      },
+                      getLabel: (group) => group.name,
+                    );
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                  error: (error, stack) => Text('Error: $error'),
+                ),
+                const SizedBox(width: 16),
+                membersAsync.when(
+                  data: (members) => BMPopupMenuButton<Member?>(
+                    value: selectedMember,
+                    items: [null, ...members],
+                    hint: '전체',
+                    getLabel: (member) => member?.nickname ?? '전체',
+                    onChanged: (Member? newValue) {
+                      setState(() {
+                        selectedMember = newValue;
+                      });
+                    },
+                  ),
+                  loading: () => const CircularProgressIndicator(),
+                  error: (error, stack) => Text('Error: $error'),
+                ),
+                const SizedBox(width: 32),
+                const BMImage(
+                  imageUrl: 'lib/assets/images/chart.svg',
+                  imageType: ImageType.svg,
+                ),
+                const SizedBox(width: 16),
+                const BMImage(
+                  imageUrl: 'lib/assets/images/bell.svg',
+                  imageType: ImageType.svg,
+                ),
+                const SizedBox(width: 16),
+                const BMImage(
+                  imageUrl: 'lib/assets/images/setting.svg',
+                  imageType: ImageType.svg,
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: viewMode == ViewMode.daily
+                ? DailyTaskView(
+                    groupId: groupId ?? '',
+                    selectedMember: selectedMember,
+                  )
+                : Center(
+                    child: Text(
+                      '월간 뷰',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 프로필 섹션
-              profileAsync.when(
-                data: (profile) => Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.blue,
-                      backgroundImage: profile?['profile_url'] != null
-                          ? NetworkImage(profile!['profile_url'])
-                          : null,
-                      child: profile?['profile_url'] == null
-                          ? const Icon(Icons.person,
-                              color: Colors.white, size: 40)
-                          : null,
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          profile?['nickname'] ?? '사용자',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          profile?['full_name'] ?? '환영합니다!',
-                          style: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                error: (error, stack) => const Text('프로필을 불러오는데 실패했습니다'),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // 앱 공유하기 섹션
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.link, size: 32, color: Colors.blue.shade700),
-                        const SizedBox(width: 12),
-                        const Text(
-                          '앱 공유하기',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      '함께할 파트너 및 지인들과\n앱 다운로드 링크를 공유해 보세요!',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        height: 1.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // 그룹 리스트 섹션
-              const Text(
-                '나의 그룹',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Consumer(
-                builder: (context, ref, child) {
-                  final groupsAsync = ref.watch(groupProviderProvider);
-
-                  return groupsAsync.when(
-                    data: (groups) {
-                      if (groups.isEmpty) {
-                        return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text('참여 중인 그룹이 없습니다'),
-                          ),
-                        );
-                      }
-
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: groups.length,
-                        itemBuilder: (context, index) {
-                          final group = groups[index];
-                          return Card(
-                            margin: const EdgeInsets.only(bottom: 8),
-                            child: ListTile(
-                              onTap: () {
-                                context.push('/group/${group.id}');
-                              },
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.grey.shade200,
-                                child: const Icon(Icons.group),
-                              ),
-                              title: Text(group.name),
-                              subtitle: Text(
-                                  '${group.memberCount}명의 멤버 · ${group.createdAt.toString().split(' ')[0]}'),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.share),
-                                onPressed: () {
-                                  // TODO: 그룹 공유 기능 구현
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    loading: () => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    error: (error, stack) => Center(
-                      child: Text('Error: $error'),
-                    ),
-                  );
-                },
-              ),
-
-              // 액션 버튼들
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildActionButton(
-                      context,
-                      '채널 만들기',
-                      Icons.group_add,
-                      () {
-                        context.push('/create-group');
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _buildActionButton(
-                      context,
-                      'TBD',
-                      Icons.person_add,
-                      () {},
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: const BottomNavBar(),
-    );
-  }
-
-  Widget _buildActionButton(
-    BuildContext context,
-    String label,
-    IconData icon,
-    VoidCallback onPressed,
-  ) {
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(12),
-      elevation: 1,
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, size: 28),
-              const SizedBox(height: 8),
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
+      floatingActionButton: AddTaskButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => AddTaskModal(groupId: groupId ?? ''),
+          );
+        },
       ),
     );
   }

@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jobmoim/assets/style/colors.dart';
 import 'package:jobmoim/routes/app_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-Future<void> main() async {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // .env 파일 로드
+  try {
+    await dotenv.load();
+  } catch (e) {
+    debugPrint('Failed to load .env file: $e');
+    // 여기서 기본값을 설정하거나 에러 처리를 할 수 있습니다
+  }
+
+  // Supabase 초기화
   await Supabase.initialize(
-      url: 'https://lokevrfplvmsiozotluw.supabase.co',
-      anonKey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxva2V2cmZwbHZtc2lvem90bHV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg2MzQ4NzksImV4cCI6MjA1NDIxMDg3OX0.y7jaML5dY1GQ8s2bmFVOJXxq_d1eHeoDXpbw7nxuZK4');
+    url: dotenv.env['SUPABASE_URL'] ?? '',
+    anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
+  );
+
   runApp(const ProviderScope(child: MyApp()));
 }
 

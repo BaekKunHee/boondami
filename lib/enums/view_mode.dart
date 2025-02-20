@@ -1,0 +1,4 @@
+enum ViewMode {
+  daily,
+  monthly,
+} 

@@ -21,4 +21,8 @@ flutter pub run build_runner watch --delete-conflicting-outputs
 
 open -a Simulator
 flutter run
+
+flutter build web
+
+firebase deploy
 ```
