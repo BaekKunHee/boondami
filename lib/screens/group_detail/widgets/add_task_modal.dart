@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jobmoim/providers/group_provider.dart';
+import 'package:jobmoim/providers/task_provider.dart';
 
 class AddTaskModal extends ConsumerStatefulWidget {
   final String groupId;
@@ -167,10 +168,26 @@ class _AddTaskModalState extends ConsumerState<AddTaskModal> {
                             startTime: startTime,
                             endTime: endTime,
                           );
-                          print(params);
 
-                          await ref.read(taskAddProvider(params).future);
-                          if (mounted) Navigator.pop(context);
+                          try {
+                            await ref.read(taskAddProvider(params).future);
+                            if (!mounted) return;
+
+                            // 성공 메시지 표시
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('태스크가 등록되었습니다')),
+                            );
+
+                            // 태스크 목록 새로고침
+                            ref.refresh(groupTasksProvider(widget.groupId));
+
+                            Navigator.pop(context);
+                          } catch (e) {
+                            if (!mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('등록 실패: $e')),
+                            );
+                          }
                         }
                       : null,
                   child: const Text('등록'),

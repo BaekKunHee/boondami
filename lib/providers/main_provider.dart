@@ -1,18 +1,21 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-part 'main_provider.g.dart';
+final supabase = Supabase.instance.client;
 
-@riverpod
-class MainProvider extends AutoDisposeNotifier<int> {
-  @override
-  int build() {
-    return 0; // 초기 선택된 탭 인덱스
+final mainProvider = FutureProvider<Map<String, dynamic>?>((ref) async {
+  try {
+    final user = supabase.auth.currentUser;
+    print(user?.id);
+    if (user == null) return null;
+
+    final response =
+        await supabase.from('profiles').select().eq('id', user.id).single();
+
+    print(response);
+
+    return response;
+  } catch (e) {
+    throw Exception('멤버 정보를 불러오는데 실패했습니다: $e');
   }
-
-  int currentIndex = 0;
-
-  // 탭 변경 메서드
-  void onItemTapped(int index) {
-    currentIndex = index;
-  }
-}
+});

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jobmoim/providers/group_provider.dart';
+import 'package:jobmoim/providers/main_provider.dart';
 import 'package:jobmoim/widget/common/bottom_nav_bar.dart';
 
 class MainPage extends ConsumerWidget {
@@ -9,6 +10,8 @@ class MainPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final profileAsync = ref.watch(mainProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('홈'),
@@ -29,10 +32,47 @@ class MainPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 프로필 섹션
-              const CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.blue,
-                child: Icon(Icons.person, color: Colors.white, size: 40),
+              profileAsync.when(
+                data: (profile) => Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.blue,
+                      backgroundImage: profile?['profile_url'] != null
+                          ? NetworkImage(profile!['profile_url'])
+                          : null,
+                      child: profile?['profile_url'] == null
+                          ? const Icon(Icons.person,
+                              color: Colors.white, size: 40)
+                          : null,
+                    ),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          profile?['nickname'] ?? '사용자',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          profile?['full_name'] ?? '환영합니다!',
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                error: (error, stack) => const Text('프로필을 불러오는데 실패했습니다'),
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
               const SizedBox(height: 24),
 

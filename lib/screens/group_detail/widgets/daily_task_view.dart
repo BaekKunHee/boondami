@@ -75,6 +75,8 @@ class TaskBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final assignments = task.taskAssignments;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(84, 4, 16, 4),
       child: Container(
@@ -90,16 +92,44 @@ class TaskBlock extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      task.taskCategories?.name ?? '',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          task.taskCategories?.name ?? '',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white24,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            task.taskAssignments.first.taskStatus ==
+                                    'not_started'
+                                ? '대기중'
+                                : task.taskAssignments.first.taskStatus ==
+                                        'in_progress'
+                                    ? '진행중'
+                                    : '완료',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${_formatTime(task.taskAssignments.first.startTime)} ~ ${_formatTime(task.taskAssignments.first.endTime)}',
+                      '${_formatTime(assignments.first.startTime)} ~ ${_formatTime(assignments.first.endTime)}',
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
@@ -108,10 +138,49 @@ class TaskBlock extends StatelessWidget {
                   ],
                 ),
               ),
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                    task.taskAssignments.first.profiles.profileUrl ?? ''),
-                radius: 16,
+              // 프로필 이미지 스택
+              SizedBox(
+                width: assignments.length > 1 ? 52 : 32,
+                height: 32,
+                child: Stack(
+                  children: [
+                    if (assignments.isNotEmpty)
+                      Positioned(
+                        right: 0,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            assignments[0].profiles.profileUrl ?? '',
+                          ),
+                          radius: 16,
+                        ),
+                      ),
+                    if (assignments.length > 1)
+                      Positioned(
+                        right: 20,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            assignments[1].profiles.profileUrl ?? '',
+                          ),
+                          radius: 16,
+                        ),
+                      ),
+                    if (assignments.length > 2)
+                      Positioned(
+                        right: 0,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.black54,
+                          radius: 16,
+                          child: Text(
+                            '+${assignments.length - 2}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ],
           ),
